@@ -19,7 +19,7 @@ async function bootstrap() {
 
   // Swagger
   const config = new DocumentBuilder()
-    .setTitle('movie-ai-explorer')
+    .setTitle('movie-ai-explorer-backend')
     .setDescription('description')
     .setVersion('1.0')
     .build();
