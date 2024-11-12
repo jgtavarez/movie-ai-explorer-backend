@@ -5,6 +5,7 @@ import {
   NAME_LIMIT,
 } from 'src/common/utils/constants/limits.constants';
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 @Unique('user_email_unique', ['email'])
@@ -19,6 +20,7 @@ export class User extends BaseEntity {
 
   @ApiProperty()
   @Column()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @ApiProperty()

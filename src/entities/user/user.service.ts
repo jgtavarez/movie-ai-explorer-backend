@@ -22,15 +22,15 @@ export class UserService {
 
   async findOneByEmail(email: string): Promise<User> {
     try {
-      const emailFound = await this.userRepository.findOne({
+      const user = await this.userRepository.findOne({
         where: { email },
       });
 
-      if (!emailFound) {
+      if (!user) {
         throw new UnauthorizedException();
       }
 
-      return emailFound;
+      return user;
     } catch (error) {
       this.logger.error(error);
       throw error;
@@ -48,8 +48,7 @@ export class UserService {
       }
 
       const newUser = this.userRepository.create({
-        name: createUserInput.name,
-        email: createUserInput.email,
+        ...createUserInput,
         password: bcrypt.hashSync(createUserInput.password, 10),
       });
       return await this.userRepository.save(newUser);
@@ -68,8 +67,6 @@ export class UserService {
       if (!user) {
         throw new NotFoundException();
       }
-
-      delete user.password;
 
       return user;
     } catch (error) {
