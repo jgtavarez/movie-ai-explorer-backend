@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -39,17 +40,22 @@ export class UserService {
 
   async create(createUserInput: CreateUserInput): Promise<User> {
     try {
+      const { password, confirmPassword, ...restCreateUserInput } =
+        createUserInput;
+      if (password !== confirmPassword) {
+        throw new BadRequestException('Passwords do not match');
+      }
+
       const user = await this.userRepository.findOne({
         where: { email: createUserInput.email },
       });
-
       if (user) {
-        throw new ConflictException();
+        throw new ConflictException('Email already exists');
       }
 
       const newUser = this.userRepository.create({
-        ...createUserInput,
-        password: bcrypt.hashSync(createUserInput.password, 10),
+        ...restCreateUserInput,
+        password: bcrypt.hashSync(password, 10),
       });
       return await this.userRepository.save(newUser);
     } catch (error) {

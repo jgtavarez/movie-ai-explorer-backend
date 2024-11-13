@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
+  Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -27,5 +28,17 @@ export class CreateUserInput {
   @IsString()
   @MinLength(8)
   @IsNotEmpty()
+  @Matches(/[a-zA-Z]/, { message: 'Contain at least one letter' })
+  @Matches(/[0-9]/, { message: 'Contain at least one number' })
+  @Matches(/[^a-zA-Z0-9]/, {
+    message: 'Contain at least one special character',
+  })
   password: string;
+
+  @ApiProperty()
+  @IsString()
+  @MinLength(8)
+  @IsNotEmpty()
+  @Matches('password')
+  confirmPassword: string;
 }
