@@ -2,10 +2,6 @@ export interface MoviesResp {
   Search: MovieSearch[];
   totalResults: string;
   Response: string;
-}
-
-export interface ApiError {
-  Response: string;
   Error: string;
 }
 

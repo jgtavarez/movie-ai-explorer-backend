@@ -1,10 +1,15 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { GetAllMoviesParams } from './dto/get-all-movies.params';
 import { AxiosRequestConfig } from 'axios';
 import { lastValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { ApiError, MovieResp, MoviesResp } from './dto/api';
+import { MovieResp, MoviesResp } from './dto/api';
 
 @Injectable()
 export class MovieService {
@@ -15,9 +20,7 @@ export class MovieService {
 
   private readonly logger = new Logger(MovieService.name);
 
-  async findAll(
-    getAllMoviesParams: GetAllMoviesParams,
-  ): Promise<MoviesResp | ApiError> {
+  async findAll(getAllMoviesParams: GetAllMoviesParams): Promise<MoviesResp> {
     try {
       const { search, type, year } = getAllMoviesParams;
       const reqConf: AxiosRequestConfig = {
@@ -39,17 +42,19 @@ export class MovieService {
           reqConf,
         ),
       );
+
+      if (resp.data.Response === 'False') {
+        throw new InternalServerErrorException(resp.data.Error);
+      }
+
       return resp.data;
     } catch (error) {
       this.logger.error(error);
-      return {
-        Response: 'False',
-        Error: error.message,
-      };
+      throw error;
     }
   }
 
-  async findOne(id: string): Promise<MovieResp | ApiError> {
+  async findOne(id: string): Promise<MovieResp> {
     try {
       const reqConf: AxiosRequestConfig = {
         params: {
@@ -65,13 +70,15 @@ export class MovieService {
           reqConf,
         ),
       );
+
+      if (resp.data.Response === 'False') {
+        throw new NotFoundException();
+      }
+
       return resp.data;
     } catch (error) {
       this.logger.error(error);
-      return {
-        Response: 'False',
-        Error: error.message,
-      };
+      throw error;
     }
   }
 }
