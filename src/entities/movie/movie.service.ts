@@ -22,7 +22,7 @@ export class MovieService {
 
   async findAll(getAllMoviesParams: GetAllMoviesParams): Promise<MoviesResp> {
     try {
-      const { search, type, year } = getAllMoviesParams;
+      const { search, type, year: y, page } = getAllMoviesParams;
       const reqConf: AxiosRequestConfig = {
         params: {
           apikey: this.configService.get('OMDB_API_KEY'),
@@ -30,8 +30,11 @@ export class MovieService {
           ...(type && {
             type,
           }),
-          ...(year && {
-            y: year,
+          ...(y && {
+            y,
+          }),
+          ...(page && {
+            page,
           }),
         },
       };

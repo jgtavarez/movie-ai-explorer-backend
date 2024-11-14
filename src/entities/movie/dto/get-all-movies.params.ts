@@ -7,6 +7,7 @@ import {
   IsOptional,
   MaxLength,
 } from 'class-validator';
+import { PaginationParams } from 'src/common/dto/pagination.params';
 
 export enum MovieType {
   Movie = 'movie',
@@ -14,7 +15,7 @@ export enum MovieType {
   Episode = 'episode',
 }
 
-export class GetAllMoviesParams {
+export class GetAllMoviesParams extends PaginationParams {
   @ApiProperty()
   @IsNotEmpty()
   @MaxLength(256)
