@@ -39,6 +39,5 @@ export class CreateUserInput {
   @IsString()
   @MinLength(8)
   @IsNotEmpty()
-  @Matches('password')
   confirmPassword: string;
 }

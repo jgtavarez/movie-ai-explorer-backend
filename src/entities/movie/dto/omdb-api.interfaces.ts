@@ -9,11 +9,11 @@ export interface MovieSearch {
   Title: string;
   Year: string;
   imdbID: string;
-  Type: Type;
+  Type: MovieType;
   Poster: string;
 }
 
-export enum Type {
+export enum MovieType {
   Movie = 'movie',
   Series = 'series',
   Episode = 'episode',

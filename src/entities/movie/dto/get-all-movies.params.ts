@@ -5,18 +5,15 @@ import {
   IsInt,
   IsNotEmpty,
   IsOptional,
+  IsString,
   MaxLength,
 } from 'class-validator';
 import { PaginationParams } from 'src/common/dto/pagination.params';
-
-export enum MovieType {
-  Movie = 'movie',
-  Series = 'series',
-  Episode = 'episode',
-}
+import { MovieType } from './omdb-api.interfaces';
 
 export class GetAllMoviesParams extends PaginationParams {
   @ApiProperty()
+  @IsString()
   @IsNotEmpty()
   @MaxLength(256)
   search: string;

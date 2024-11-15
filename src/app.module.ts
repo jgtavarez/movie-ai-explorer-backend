@@ -5,6 +5,7 @@ import { UserModule } from './entities/user/user.module';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { MovieModule } from './entities/movie/movie.module';
+import { FavoriteModule } from './entities/favorite/favorite.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { MovieModule } from './entities/movie/movie.module';
     CommonModule,
     UserModule,
     MovieModule,
+    FavoriteModule,
   ],
   controllers: [],
   providers: [],
