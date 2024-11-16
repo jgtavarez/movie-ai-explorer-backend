@@ -3,16 +3,12 @@ import {
   Get,
   Post,
   Body,
-  // Patch,
   Param,
-  Delete,
   UseGuards,
   Query,
-  ParseUUIDPipe,
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
-import { CreateFavoriteInput } from './dto/create-favorite.input';
-// import { UpdateFavoriteDto } from './dto/update-favorite.dto';
+import { ToggleFavoriteInput } from './dto/toggle-favorite.input';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -29,11 +25,11 @@ export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
   @Post()
-  create(
-    @Body() createFavoriteInput: CreateFavoriteInput,
+  toggle(
+    @Body() toggleFavoriteInput: ToggleFavoriteInput,
     @CurrentUser() currentUser: CurrentUserType,
   ): Promise<Favorite> {
-    return this.favoriteService.create(createFavoriteInput, currentUser);
+    return this.favoriteService.toggle(toggleFavoriteInput, currentUser);
   }
 
   @Get()
@@ -44,19 +40,11 @@ export class FavoriteController {
     return this.favoriteService.findAll(getAllFavoritesParams, currentUser);
   }
 
-  // @Patch(':id')
-  // update(
-  //   @Param('id') id: string,
-  //   @Body() updateFavoriteDto: UpdateFavoriteDto,
-  // ) {
-  //   return this.favoriteService.update(+id, updateFavoriteDto);
-  // }
-
-  @Delete(':id')
-  remove(
+  @Get(':imdb_id')
+  findOne(
+    @Param('imdb_id') imdb_id: string,
     @CurrentUser() currentUser: CurrentUserType,
-    @Param('id', ParseUUIDPipe) id: string,
-  ) {
-    return this.favoriteService.remove(id, currentUser);
+  ): Promise<boolean> {
+    return this.favoriteService.isUserFavorite(imdb_id, currentUser);
   }
 }

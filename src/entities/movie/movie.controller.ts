@@ -12,11 +12,11 @@ export class MovieController {
 
   @Get()
   findAll(@Query() getAllMoviesParams: GetAllMoviesParams) {
-    return this.movieService.findAll(getAllMoviesParams);
+    return this.movieService.findAllApi(getAllMoviesParams);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.movieService.findOne(id);
+  @Get(':imdb_id')
+  findOne(@Param('imdb_id') imdb_id: string) {
+    return this.movieService.findOneApi(imdb_id);
   }
 }

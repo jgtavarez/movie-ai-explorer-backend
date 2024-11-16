@@ -1,46 +1,58 @@
 import {
-  ConflictException,
+  forwardRef,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-// import { UpdateFavoriteDto } from './dto/update-favorite.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Favorite } from './entities/favorite.entity';
 import { ILike, Repository } from 'typeorm';
-import { CreateFavoriteInput } from './dto/create-favorite.input';
 import { CurrentUserType } from 'src/auth/decorators/current-user.decorator';
 import { MovieService } from '../movie/movie.service';
 import { GetAllFavoritesParams } from './dto/get-all-favorites.params';
+import { ToggleFavoriteInput } from './dto/toggle-favorite.input';
 
 @Injectable()
 export class FavoriteService {
   constructor(
     @InjectRepository(Favorite)
     private favoriteRepository: Repository<Favorite>,
+    @Inject(forwardRef(() => MovieService))
     private movieService: MovieService,
   ) {}
 
   private logger: Logger = new Logger(FavoriteService.name);
 
-  async create(
-    createFavoriteInput: CreateFavoriteInput,
+  async toggle(
+    toggleFavoriteInput: ToggleFavoriteInput,
     currentUser: CurrentUserType,
   ): Promise<Favorite> {
     try {
-      const { imdb_id } = createFavoriteInput;
-      const movie = await this.movieService.create({ imdb_id });
-      console.log(movie.id, currentUser.id);
+      const { imdb_id } = toggleFavoriteInput;
+      const movie = await this.movieService.upsert({ imdb_id });
 
       // Check if movie is already user favorite
-      const favoriteFound = await this.findOne(movie.id, currentUser.id);
-      if (favoriteFound) {
-        throw new ConflictException();
-      }
-
-      const newFavorite = this.favoriteRepository.create({
+      const favoriteFound = await this.favoriteRepository.findOneBy({
         movie_id: movie.id,
         user_id: currentUser.id,
+      });
+      if (favoriteFound) {
+        return this.remove(favoriteFound.id, currentUser.id);
+      }
+
+      return this.create(movie.id, currentUser.id);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  async create(movie_id: string, user_id: string): Promise<Favorite> {
+    try {
+      const newFavorite = this.favoriteRepository.create({
+        movie_id,
+        user_id,
       });
       return await this.favoriteRepository.save(newFavorite);
     } catch (error) {
@@ -49,13 +61,19 @@ export class FavoriteService {
     }
   }
 
-  async findOne(movieId: string, userId: string): Promise<Favorite | null> {
+  async remove(id: string, user_id: string): Promise<Favorite> {
     try {
       const favorite = await this.favoriteRepository.findOneBy({
-        movie_id: movieId,
-        user_id: userId,
+        id,
+        user_id,
       });
+      if (!favorite) {
+        throw new NotFoundException();
+      }
 
+      await this.favoriteRepository.remove(favorite);
+
+      favorite.id = id;
       return favorite;
     } catch (error) {
       this.logger.error(error);
@@ -90,21 +108,25 @@ export class FavoriteService {
     }
   }
 
-  // update(id: number, updateFavoriteDto: UpdateFavoriteDto) {
-  //   return `This action updates a #${id} favorite`;
-  // }
-
-  async remove(id: string, currentUser: CurrentUserType): Promise<Favorite> {
+  async isUserFavorite(
+    imdb_id: string,
+    currentUser: CurrentUserType,
+  ): Promise<boolean> {
     try {
-      const favorite = await this.findOne(id, currentUser.id);
+      const favorite = await this.favoriteRepository.findOne({
+        where: {
+          movie: {
+            imdb_id,
+          },
+          user_id: currentUser.id,
+        },
+        select: ['id'],
+      });
       if (!favorite) {
-        throw new NotFoundException();
+        return false;
       }
 
-      await this.favoriteRepository.remove(favorite);
-
-      favorite.id = id;
-      return favorite;
+      return true;
     } catch (error) {
       this.logger.error(error);
       throw error;

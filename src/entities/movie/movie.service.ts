@@ -14,12 +14,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
 import { Repository } from 'typeorm';
 import { CreateMovieInput } from './dto/create-movie.input';
+import { FavoriteService } from '../favorite/favorite.service';
 
 @Injectable()
 export class MovieService {
   constructor(
     @InjectRepository(Movie)
     private movieRepository: Repository<Movie>,
+    private readonly favoriteService: FavoriteService,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {}
@@ -28,7 +30,9 @@ export class MovieService {
 
   // api
 
-  async findAll(getAllMoviesParams: GetAllMoviesParams): Promise<MoviesResp> {
+  async findAllApi(
+    getAllMoviesParams: GetAllMoviesParams,
+  ): Promise<MoviesResp> {
     try {
       const { search, type, year: y, page } = getAllMoviesParams;
       const reqConf: AxiosRequestConfig = {
@@ -65,7 +69,7 @@ export class MovieService {
     }
   }
 
-  async findOne(id: string): Promise<MovieResp> {
+  async findOneApi(id: string): Promise<MovieResp> {
     try {
       const reqConf: AxiosRequestConfig = {
         params: {
@@ -95,10 +99,10 @@ export class MovieService {
 
   // db
 
-  async create(createMovieInput: CreateMovieInput): Promise<Movie> {
+  async upsert(createMovieInput: CreateMovieInput): Promise<Movie> {
     try {
       // check if movie exists (api)
-      const movie = await this.findOne(createMovieInput.imdb_id);
+      const movie = await this.findOneApi(createMovieInput.imdb_id);
       if (!movie) {
         throw new NotFoundException();
       }
