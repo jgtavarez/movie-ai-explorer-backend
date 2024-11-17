@@ -5,7 +5,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
-import { FavoriteModule } from '../favorite/favorite.module';
+import { OpenAiModule } from 'src/open-ai/open-ai.module';
 
 @Module({
   controllers: [MovieController],
@@ -14,7 +14,7 @@ import { FavoriteModule } from '../favorite/favorite.module';
     TypeOrmModule.forFeature([Movie]),
     ConfigModule,
     HttpModule,
-    FavoriteModule,
+    OpenAiModule,
   ],
   exports: [MovieService],
 })

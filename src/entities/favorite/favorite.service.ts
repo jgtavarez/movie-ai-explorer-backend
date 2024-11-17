@@ -1,14 +1,7 @@
-import {
-  forwardRef,
-  Inject,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Favorite } from './entities/favorite.entity';
 import { ILike, Repository } from 'typeorm';
-import { CurrentUserType } from 'src/auth/decorators/current-user.decorator';
 import { MovieService } from '../movie/movie.service';
 import { GetAllFavoritesParams } from './dto/get-all-favorites.params';
 import { ToggleFavoriteInput } from './dto/toggle-favorite.input';
@@ -18,7 +11,6 @@ export class FavoriteService {
   constructor(
     @InjectRepository(Favorite)
     private favoriteRepository: Repository<Favorite>,
-    @Inject(forwardRef(() => MovieService))
     private movieService: MovieService,
   ) {}
 
@@ -26,7 +18,7 @@ export class FavoriteService {
 
   async toggle(
     toggleFavoriteInput: ToggleFavoriteInput,
-    currentUser: CurrentUserType,
+    userId: string,
   ): Promise<Favorite> {
     try {
       const { imdb_id } = toggleFavoriteInput;
@@ -35,13 +27,13 @@ export class FavoriteService {
       // Check if movie is already user favorite
       const favoriteFound = await this.favoriteRepository.findOneBy({
         movie_id: movie.id,
-        user_id: currentUser.id,
+        user_id: userId,
       });
       if (favoriteFound) {
-        return this.remove(favoriteFound.id, currentUser.id);
+        return this.remove(favoriteFound.id, userId);
       }
 
-      return this.create(movie.id, currentUser.id);
+      return this.create(movie.id, userId);
     } catch (error) {
       this.logger.error(error);
       throw error;
@@ -83,7 +75,7 @@ export class FavoriteService {
 
   async findAll(
     getAllFavoritesParams: GetAllFavoritesParams,
-    currentUser: CurrentUserType,
+    userId: string,
   ): Promise<Favorite[]> {
     try {
       const { search } = getAllFavoritesParams;
@@ -92,7 +84,7 @@ export class FavoriteService {
         // take: , TODO
         // skip: ,
         where: {
-          user_id: currentUser.id,
+          user_id: userId,
           movie: {
             ...(search && {
               title: ILike(`%${search}%`),
@@ -108,17 +100,14 @@ export class FavoriteService {
     }
   }
 
-  async isUserFavorite(
-    imdb_id: string,
-    currentUser: CurrentUserType,
-  ): Promise<boolean> {
+  async isUserFavorite(imdb_id: string, userId: string): Promise<boolean> {
     try {
       const favorite = await this.favoriteRepository.findOne({
         where: {
           movie: {
             imdb_id,
           },
-          user_id: currentUser.id,
+          user_id: userId,
         },
         select: ['id'],
       });

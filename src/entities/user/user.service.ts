@@ -26,7 +26,6 @@ export class UserService {
       const user = await this.userRepository.findOne({
         where: { email },
       });
-
       if (!user) {
         throw new UnauthorizedException();
       }
@@ -69,11 +68,11 @@ export class UserService {
       const user = await this.userRepository.findOne({
         where: { id },
       });
-
       if (!user) {
         throw new NotFoundException();
       }
 
+      delete user.password;
       return user;
     } catch (error) {
       this.logger.error(error);

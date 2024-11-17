@@ -29,7 +29,7 @@ export class FavoriteController {
     @Body() toggleFavoriteInput: ToggleFavoriteInput,
     @CurrentUser() currentUser: CurrentUserType,
   ): Promise<Favorite> {
-    return this.favoriteService.toggle(toggleFavoriteInput, currentUser);
+    return this.favoriteService.toggle(toggleFavoriteInput, currentUser.id);
   }
 
   @Get()
@@ -37,7 +37,7 @@ export class FavoriteController {
     @Query() getAllFavoritesParams: GetAllFavoritesParams,
     @CurrentUser() currentUser: CurrentUserType,
   ): Promise<Favorite[]> {
-    return this.favoriteService.findAll(getAllFavoritesParams, currentUser);
+    return this.favoriteService.findAll(getAllFavoritesParams, currentUser.id);
   }
 
   @Get(':imdb_id')
@@ -45,6 +45,6 @@ export class FavoriteController {
     @Param('imdb_id') imdb_id: string,
     @CurrentUser() currentUser: CurrentUserType,
   ): Promise<boolean> {
-    return this.favoriteService.isUserFavorite(imdb_id, currentUser);
+    return this.favoriteService.isUserFavorite(imdb_id, currentUser.id);
   }
 }

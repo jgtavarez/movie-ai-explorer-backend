@@ -14,16 +14,23 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
 import { Repository } from 'typeorm';
 import { CreateMovieInput } from './dto/create-movie.input';
-import { FavoriteService } from '../favorite/favorite.service';
+import { OpenAiService } from 'src/open-ai/open-ai.service';
+import { generateMovieDetailsFormat } from 'src/open-ai/promts';
+
+interface GetOneMovieParams {
+  imdbId: string;
+  plot?: 'short' | 'full';
+  title?: string;
+}
 
 @Injectable()
 export class MovieService {
   constructor(
     @InjectRepository(Movie)
     private movieRepository: Repository<Movie>,
-    private readonly favoriteService: FavoriteService,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    private readonly openAiService: OpenAiService,
   ) {}
 
   private readonly logger = new Logger(MovieService.name);
@@ -69,13 +76,14 @@ export class MovieService {
     }
   }
 
-  async findOneApi(id: string): Promise<MovieResp> {
+  async findOneApi(getOneMovieParams: GetOneMovieParams): Promise<MovieResp> {
+    const { imdbId, plot = 'full', title } = getOneMovieParams;
     try {
       const reqConf: AxiosRequestConfig = {
         params: {
           apikey: this.configService.get('OMDB_API_KEY'),
-          i: id,
-          plot: 'full',
+          plot,
+          ...(title ? { t: title } : { i: imdbId }),
         },
       };
 
@@ -97,12 +105,38 @@ export class MovieService {
     }
   }
 
+  async findAllRecommendations(imdbId: string): Promise<MovieResp[]> {
+    try {
+      // short plot to reduce ai promt tokens
+      const movie = await this.findOneApi({ imdbId, plot: 'short' });
+      const { recommendations }: { recommendations: string[] } =
+        await this.openAiService.getRecommendations(
+          generateMovieDetailsFormat(movie),
+        );
+
+      // if one promise fail keep with the rest
+      const results = await Promise.allSettled(
+        recommendations.map((title) => this.findOneApi({ imdbId: '', title })),
+      );
+
+      // return only successful requests
+      const movies = results
+        .filter((result) => result.status === 'fulfilled')
+        .map((result) => result.value);
+
+      return movies;
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
   // db
 
   async upsert(createMovieInput: CreateMovieInput): Promise<Movie> {
     try {
       // check if movie exists (api)
-      const movie = await this.findOneApi(createMovieInput.imdb_id);
+      const movie = await this.findOneApi({ imdbId: createMovieInput.imdb_id });
       if (!movie) {
         throw new NotFoundException();
       }

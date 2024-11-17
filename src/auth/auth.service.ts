@@ -32,7 +32,6 @@ export class AuthService {
       if (!bcrypt.compareSync(loginInput.password, user.password)) {
         throw new UnauthorizedException();
       }
-
       if (!user.active) {
         throw new ForbiddenException();
       }
@@ -65,7 +64,6 @@ export class AuthService {
 
   async validateUser(id: string): Promise<User> {
     const user = await this.userService.findOne(id);
-
     if (!user.active) {
       throw new ForbiddenException();
     }

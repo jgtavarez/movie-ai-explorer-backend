@@ -6,6 +6,7 @@ import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { MovieModule } from './entities/movie/movie.module';
 import { FavoriteModule } from './entities/favorite/favorite.module';
+import { OpenAiModule } from './open-ai/open-ai.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { FavoriteModule } from './entities/favorite/favorite.module';
     UserModule,
     MovieModule,
     FavoriteModule,
+    OpenAiModule,
   ],
   controllers: [],
   providers: [],
