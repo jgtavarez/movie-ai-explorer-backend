@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { MovieModule } from './entities/movie/movie.module';
 import { FavoriteModule } from './entities/favorite/favorite.module';
 import { OpenAiModule } from './open-ai/open-ai.module';
+import { CategoryModule } from './entities/category/category.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { OpenAiModule } from './open-ai/open-ai.module';
     MovieModule,
     FavoriteModule,
     OpenAiModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [],

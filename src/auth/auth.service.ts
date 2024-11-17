@@ -36,10 +36,11 @@ export class AuthService {
         throw new ForbiddenException();
       }
 
-      delete user.password;
       return {
         jwt: this.getJwtToken(user.id),
-        user: user,
+        user: {
+          id: user.id,
+        },
       };
     } catch (error) {
       this.logger.error(error);
@@ -54,7 +55,9 @@ export class AuthService {
       delete newUser.password;
       return {
         jwt: this.getJwtToken(newUser.id),
-        user: newUser,
+        user: {
+          id: newUser.id,
+        },
       };
     } catch (error) {
       this.logger.error(error);

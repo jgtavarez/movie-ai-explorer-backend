@@ -3,7 +3,7 @@ import { Movie } from 'src/entities/movie/entities/movie.entity';
 import { User } from 'src/entities/user/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 
-@Entity() //ManyToMany
+@Entity() // ManyToMany
 @Unique('user_movie_unique', ['user_id', 'movie_id'])
 export class Favorite extends BaseEntity {
   // Relation

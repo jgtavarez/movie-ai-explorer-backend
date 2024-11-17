@@ -11,12 +11,15 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private categoryService: CategoryService,
   ) {}
 
   private logger: Logger = new Logger(UserService.name);
@@ -72,8 +75,28 @@ export class UserService {
         throw new NotFoundException();
       }
 
-      delete user.password;
       return user;
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  async update(
+    updateUserInput: UpdateUserInput,
+    userId: string,
+  ): Promise<User> {
+    try {
+      const categories = await this.categoryService.findByIds(
+        updateUserInput.categories,
+      );
+
+      const updateUser = await this.userRepository.preload({
+        id: userId,
+        categories,
+      });
+
+      return await this.userRepository.save(updateUser);
     } catch (error) {
       this.logger.error(error);
       throw error;

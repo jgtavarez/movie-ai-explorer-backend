@@ -1,9 +1,7 @@
-import { IsUUID } from 'class-validator';
-import { CreateUserInput } from './create-user.input';
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { IsArray, IsUUID } from 'class-validator';
 
-export class UpdateUserInput extends PartialType(CreateUserInput) {
-  @ApiProperty()
-  @IsUUID()
-  id: string;
+export class UpdateUserInput {
+  @IsArray()
+  @IsUUID('4', { each: true })
+  categories: string[];
 }
