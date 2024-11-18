@@ -5,7 +5,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
-import { OpenAiModule } from 'src/open-ai/open-ai.module';
+import { OpenAiModule } from '../../open-ai/open-ai.module';
 
 @Module({
   controllers: [MovieController],

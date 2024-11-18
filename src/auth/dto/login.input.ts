@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, MaxLength } from 'class-validator';
-import { EMAIL_LIMIT } from 'src/common/utils/constants/limits.constants';
+import { EMAIL_LIMIT } from '../../common/utils/constants/limits.constants';
 
 export class LoginInput {
   @ApiProperty()

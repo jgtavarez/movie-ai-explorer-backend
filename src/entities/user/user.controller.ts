@@ -1,14 +1,14 @@
 import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
+import { User } from './entities/user.entity';
+import { UpdateUserInput } from './dto/update-user.input';
+import { MovieResp } from '../movie/dto/omdb-api.interfaces';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import {
   CurrentUser,
   CurrentUserType,
-} from 'src/auth/decorators/current-user.decorator';
-import { User } from './entities/user.entity';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { UpdateUserInput } from './dto/update-user.input';
-import { MovieResp } from '../movie/dto/omdb-api.interfaces';
+} from '../../auth/decorators/current-user.decorator';
 
 @ApiTags('User')
 @Controller('user')

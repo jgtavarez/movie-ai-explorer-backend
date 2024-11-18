@@ -10,7 +10,7 @@ import {
 import {
   EMAIL_LIMIT,
   NAME_LIMIT,
-} from 'src/common/utils/constants/limits.constants';
+} from '../../../common/utils/constants/limits.constants';
 
 export class CreateUserInput {
   @ApiProperty()

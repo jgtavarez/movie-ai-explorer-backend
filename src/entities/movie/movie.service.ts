@@ -14,8 +14,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
 import { Repository } from 'typeorm';
 import { CreateMovieInput } from './dto/create-movie.input';
-import { OpenAiService } from 'src/open-ai/open-ai.service';
-import { generateMovieDetailsFormat } from 'src/open-ai/prompts';
+import { OpenAiService } from '../../open-ai/open-ai.service';
+import { generateMovieDetailsFormat } from '../../open-ai/prompts';
 
 interface GetOneMovieParams {
   imdbId: string;

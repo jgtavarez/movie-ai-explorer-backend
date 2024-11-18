@@ -8,8 +8,8 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { PaginationParams } from 'src/common/dto/pagination.params';
 import { MovieType } from './omdb-api.interfaces';
+import { PaginationParams } from '../../../common/dto/pagination.params';
 
 export class GetAllMoviesParams extends PaginationParams {
   @ApiProperty()

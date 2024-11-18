@@ -1,4 +1,4 @@
-import { User } from 'src/entities/user/entities/user.entity';
+import { User } from '../../entities/user/entities/user.entity';
 
 export class AuthResponse {
   jwt: string;
