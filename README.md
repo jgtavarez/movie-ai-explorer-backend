@@ -1,73 +1,130 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+<div align="center">
+  <h3 align="center"> <b>Movie AI Explorer - Backend</b> </h3>
+  <h3 align="center">Movie Explorer with AI Enhancements</h3> 
+</div>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Technologies ⚙️
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Core technologies used..
 
-## Description
+- This project was generated with [Nest.js](https://nestjs.com) version ^10.0.0.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- For the database [TypeORM](https://typeorm.io) version ^0.3.20.
 
-## Installation
+- For the authentication [Passport](http://www.passportjs.org) with [JWT](https://jwt.io) version ^4.0.1.
 
-```bash
-$ yarn install
+- For the validations [class-validator](https://yarnpkg.com/package?name=class-validator) version ^0.14.1 and [class-transformer](https://yarnpkg.com/package?name=class-transformer) version ^0.5.1.
+
+# Project Structure 📐
+
+The project structure is based on the [Nest Modules](https://docs.nestjs.com/modules) folder structure.
+Most relevant files and directories are:
+
+```v
+   ├── src                              // Source files
+      ├── auth                              // Auth module
+      ├── common                            // Common module
+      └── entities                          // All entities separated by modules
+         └── example                            // Example module (all modules follow the same)
+              ├── dto                               // Data transfer object
+              ├── entities                          // Entity definition
+              ├── example.controller.ts             // Controller definition
+              ├── example.module.ts                 // Module definition
+              └── example.service.ts                // Service definition
+      ├── open-ai                         // Open AI module
+      ├── app.module.ts                  // Main module
+      └── main.ts                        // Server config 
+   ├── .env                             // Enviroments variables for local
+   ├── docker-compose.yml               // Docker compose file
+   ├── package.json                     // Node.js dependencies
+   ├── README.md                        // Project documentation
+   └── yarn.lock                        // Yarn lock file
 ```
 
-## Running the app
+# Deploy 🚀
+
+### Git flow
+
+Push to **main** branch deploy to `PROD`
+
+- Deploy to [PROD](https://movie-ai-explorer-backend.vercel.app/api)
+
+# Getting started 💥
+
+How to install and running the app.
+
+- Clone this repo by running:
 
 ```bash
-# development
-$ yarn run start
+   git clone https://github.com/jgtavarez/movie-ai-explorer-backend.git
 
-# watch mode
-$ yarn run start:dev
+   # or via SSH
 
-# production mode
-$ yarn run start:prod
+   git clone git@github.com:jgtavarez/movie-ai-explorer-backend.git
 ```
 
-## Test
+- Move to develop branch:
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+   git checkout develop
 ```
 
-## Support
+- Install dependencies:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+  yarn install
+```
 
-## Stay in touch
+- Start docker container:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+  docker compose up
+```
 
-## License
+- Start development mode
 
-Nest is [MIT licensed](LICENSE).
+```bash
+  yarn run start:dev #(make sure to set your env values first)
+```
+
+> Navigate to `http://localhost:{PORT}/api` for swagger documentation
+
+# Development Pattern 📝
+
+The application is built using a modular design pattern with controllers, services and repositories to ensure a clean and maintainable architecture. Each module is in charge of group related functionalities, controllers to handle incoming requests and responses, services to encapsulate business logic, repositories/services with typeorm to handle database methods.
+
+This design allows me to scale by allowing features to be added or modified independently, while also improving reuse and separation of concerns as functionality can be easily exported from one module to another.
+
+# Other Useful Commands 💥
+
+How to install and running the app.
+
+- Build production `/dist`:
+
+```bash
+   yarn run build
+```
+
+- Start production mode:
+
+```bash
+   yarn run start:prod
+```
+
+- Unit tests:
+
+```bash
+  yarn run test
+```
+
+- e2e tests:
+
+```bash
+  yarn run test:e2e
+```
+
+- Test coverage
+
+```bash
+  yarn run test:cov
+```
