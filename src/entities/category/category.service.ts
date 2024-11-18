@@ -25,7 +25,7 @@ export class CategoryService {
     try {
       return await this.categoryRepository.find({
         order: { title: 'ASC' },
-        select: ['id', 'title'],
+        select: ['id', 'title', 'image'],
       });
     } catch (error) {
       this.logger.error(error);

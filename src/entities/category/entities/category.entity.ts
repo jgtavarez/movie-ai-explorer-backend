@@ -17,4 +17,8 @@ export class Category extends BaseEntity {
   @ApiProperty()
   @Column({ enum: CategoryTitle, type: 'enum' })
   title: CategoryTitle;
+
+  @ApiProperty()
+  @Column()
+  image: string;
 }
