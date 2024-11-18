@@ -105,32 +105,6 @@ export class MovieService {
     }
   }
 
-  async findAllRecommendations(imdbId: string): Promise<MovieResp[]> {
-    try {
-      // short plot to reduce ai promt tokens
-      const movie = await this.findOneApi({ imdbId, plot: 'short' });
-      const { recommendations }: { recommendations: string[] } =
-        await this.openAiService.getRecommendations(
-          generateMovieDetailsFormat(movie),
-        );
-
-      // if one promise fail keep with the rest
-      const results = await Promise.allSettled(
-        recommendations.map((title) => this.findOneApi({ imdbId: '', title })),
-      );
-
-      // return only successful requests
-      const movies = results
-        .filter((result) => result.status === 'fulfilled')
-        .map((result) => result.value);
-
-      return movies;
-    } catch (error) {
-      this.logger.error(error);
-      throw error;
-    }
-  }
-
   // db
 
   async upsert(createMovieInput: CreateMovieInput): Promise<Movie> {
@@ -154,6 +128,42 @@ export class MovieService {
       return await this.movieRepository.findOneBy({
         imdb_id: createMovieInput.imdb_id,
       });
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  // ai
+
+  async checkMovieHallucination(movies: string[]): Promise<MovieResp[]> {
+    // check if the movies are not hallucinated and exist
+    try {
+      const results = await Promise.allSettled(
+        movies.map((movie) => this.findOneApi({ imdbId: '', title: movie })),
+      );
+
+      // return only successful requests
+      const validMovies = results
+        .filter((result) => result.status === 'fulfilled')
+        .map((result) => result.value);
+
+      return validMovies;
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  async findAllRecommendations(imdbId: string): Promise<MovieResp[]> {
+    try {
+      // short plot to reduce ai promt tokens
+      const movie = await this.findOneApi({ imdbId, plot: 'short' });
+      const { movies } = await this.openAiService.getRecommendations(
+        generateMovieDetailsFormat(movie),
+      );
+
+      return this.checkMovieHallucination(movies);
     } catch (error) {
       this.logger.error(error);
       throw error;

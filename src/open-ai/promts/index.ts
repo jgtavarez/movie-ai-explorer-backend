@@ -1,3 +1,4 @@
+import { Category } from 'src/entities/category/entities/category.entity';
 import { MovieResp } from 'src/entities/movie/dto/omdb-api.interfaces';
 
 export const RECOMMENDATION_TEMPLATE = `
@@ -12,7 +13,7 @@ Input format:
 
 Output format:
 {
-  "recommendations": ["Interstellar", "The Prestige", "Memento", "The Matrix", "Shutter Island"]
+  "movies": ["Interstellar", "The Prestige", "Memento", "The Matrix", "Shutter Island"]
 }
 `;
 
@@ -25,4 +26,24 @@ export const generateMovieDetailsFormat = (movie: MovieResp) => {
   - Plot: ${Plot}
   - Year: ${Year}
     `;
+};
+
+// Might Like
+
+export const USER_RECOMMENDATION_TEMPLATE = `
+You are a movie recommendation assistant. Based on the user's favorite movie genres, recommend maximum 4 movies that align with their preferences. Focus on providing diverse and popular choices within the selected genres. Avoid duplicates and ensure the recommendations are relevant to the genres provided. Provide their full titles in a JSON array.
+
+Input format:
+- action
+- adventure
+- romance
+
+Output format:
+{
+  "movies": ["Mad Max: Fury Road", "The Lord of the Rings", "Pride and Prejudice", "Avatar"]
+}
+`;
+
+export const generateCategoriesDetailsFormat = (categories: Category[]) => {
+  return categories.map((category) => `- ${category.title}`).join('\n');
 };

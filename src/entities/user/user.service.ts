@@ -13,6 +13,10 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { CategoryService } from '../category/category.service';
+import { MovieResp } from '../movie/dto/omdb-api.interfaces';
+import { OpenAiService } from 'src/open-ai/open-ai.service';
+import { generateCategoriesDetailsFormat } from 'src/open-ai/promts';
+import { MovieService } from '../movie/movie.service';
 
 @Injectable()
 export class UserService {
@@ -20,6 +24,8 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private categoryService: CategoryService,
+    private readonly openAiService: OpenAiService,
+    private readonly movieService: MovieService,
   ) {}
 
   private logger: Logger = new Logger(UserService.name);
@@ -97,6 +103,21 @@ export class UserService {
       });
 
       return await this.userRepository.save(updateUser);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  async findAllRecommendations(userId: string): Promise<MovieResp[]> {
+    try {
+      const user = await this.findOne(userId);
+
+      const { movies } = await this.openAiService.getUserRecommendations(
+        generateCategoriesDetailsFormat(user.categories),
+      );
+
+      return this.movieService.checkMovieHallucination(movies);
     } catch (error) {
       this.logger.error(error);
       throw error;
