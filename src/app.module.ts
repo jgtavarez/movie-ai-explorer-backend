@@ -1,6 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './entities/user/user.module';
+import { CommonModule } from './common/common.module';
+import { AuthModule } from './auth/auth.module';
+import { MovieModule } from './entities/movie/movie.module';
+import { FavoriteModule } from './entities/favorite/favorite.module';
+import { OpenAiModule } from './open-ai/open-ai.module';
+import { CategoryModule } from './entities/category/category.module';
 
 @Module({
   imports: [
@@ -22,6 +29,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    AuthModule,
+    CommonModule,
+    UserModule,
+    MovieModule,
+    FavoriteModule,
+    OpenAiModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [],
