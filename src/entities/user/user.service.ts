@@ -15,7 +15,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { CategoryService } from '../category/category.service';
 import { MovieResp } from '../movie/dto/omdb-api.interfaces';
 import { OpenAiService } from 'src/open-ai/open-ai.service';
-import { generateCategoriesDetailsFormat } from 'src/open-ai/promts';
+import { generateCategoriesDetailsFormat } from 'src/open-ai/prompts';
 import { MovieService } from '../movie/movie.service';
 
 @Injectable()
@@ -112,6 +112,10 @@ export class UserService {
   async findAllRecommendations(userId: string): Promise<MovieResp[]> {
     try {
       const user = await this.findOne(userId);
+
+      if (!user.categories.length) {
+        return [];
+      }
 
       const { movies } = await this.openAiService.getUserRecommendations(
         generateCategoriesDetailsFormat(user.categories),

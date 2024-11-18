@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import OpenAI from 'openai';
 import {
+  CHATBOT_TEMPLATE,
   RECOMMENDATION_TEMPLATE,
   USER_RECOMMENDATION_TEMPLATE,
-} from './promts';
+} from './prompts';
 import { ConfigService } from '@nestjs/config';
 
 const MODEL = 'gpt-4';
@@ -66,6 +67,31 @@ export class OpenAiService {
       const jsonResp = JSON.parse(completion.choices[0].message.content);
 
       return jsonResp;
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  async chatBot(prompt: string) {
+    try {
+      const completion = await this.openai.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: CHATBOT_TEMPLATE,
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        model: MODEL,
+        temperature: 0.4,
+        max_tokens: 300,
+      });
+
+      return completion.choices[0].message;
     } catch (error) {
       this.logger.error(error);
       throw error;

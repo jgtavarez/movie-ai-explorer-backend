@@ -15,7 +15,7 @@ import { Movie } from './entities/movie.entity';
 import { Repository } from 'typeorm';
 import { CreateMovieInput } from './dto/create-movie.input';
 import { OpenAiService } from 'src/open-ai/open-ai.service';
-import { generateMovieDetailsFormat } from 'src/open-ai/promts';
+import { generateMovieDetailsFormat } from 'src/open-ai/prompts';
 
 interface GetOneMovieParams {
   imdbId: string;
@@ -157,7 +157,7 @@ export class MovieService {
 
   async findAllRecommendations(imdbId: string): Promise<MovieResp[]> {
     try {
-      // short plot to reduce ai promt tokens
+      // short plot to reduce ai prompt tokens
       const movie = await this.findOneApi({ imdbId, plot: 'short' });
       const { movies } = await this.openAiService.getRecommendations(
         generateMovieDetailsFormat(movie),
