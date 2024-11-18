@@ -23,10 +23,17 @@ export class MovieController {
     });
   }
 
+  // AI
+
   @Get('/recommendations/:imdbId')
   findAllRecommendations(
     @Param('imdbId') imdbId: string,
   ): Promise<MovieResp[]> {
     return this.movieService.findAllRecommendations(imdbId);
+  }
+
+  @Get('/review/:imdbId')
+  findAiReview(@Param('imdbId') imdbId: string) {
+    return this.movieService.findAiReview(imdbId);
   }
 }

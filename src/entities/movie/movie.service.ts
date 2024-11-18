@@ -169,4 +169,18 @@ export class MovieService {
       throw error;
     }
   }
+
+  async findAiReview(imdbId: string) {
+    try {
+      const movie = await this.findOneApi({ imdbId, plot: 'short' });
+      const review = await this.openAiService.getReview(
+        generateMovieDetailsFormat(movie),
+      );
+
+      return review;
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
 }
