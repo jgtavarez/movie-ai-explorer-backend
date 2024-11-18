@@ -14,9 +14,9 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { CategoryService } from '../category/category.service';
 import { MovieResp } from '../movie/dto/omdb-api.interfaces';
-import { OpenAiService } from 'src/open-ai/open-ai.service';
-import { generateCategoriesDetailsFormat } from 'src/open-ai/prompts';
 import { MovieService } from '../movie/movie.service';
+import { OpenAiService } from '../../open-ai/open-ai.service';
+import { generateCategoriesDetailsFormat } from '../../open-ai/prompts';
 
 @Injectable()
 export class UserService {

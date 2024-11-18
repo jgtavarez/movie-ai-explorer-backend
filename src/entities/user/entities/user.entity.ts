@@ -1,12 +1,12 @@
 import { Column, Entity, JoinTable, ManyToMany, Unique } from 'typeorm';
-import { BaseEntity } from 'src/common/entities/base.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import {
   EMAIL_LIMIT,
   NAME_LIMIT,
-} from 'src/common/utils/constants/limits.constants';
-import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
-import { Category } from 'src/entities/category/entities/category.entity';
+} from '../../../common/utils/constants/limits.constants';
+import { Category } from '../../category/entities/category.entity';
+import { BaseEntity } from '../../../common/entities/base.entity';
 
 @Entity()
 @Unique('user_email_unique', ['email'])

@@ -1,9 +1,9 @@
 import { Controller, Get, Param, UseGuards, Query } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GetAllMoviesParams } from './dto/get-all-movies.params';
 import { MovieResp } from './dto/omdb-api.interfaces';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
 @ApiTags('Movie')
 @Controller('movies')

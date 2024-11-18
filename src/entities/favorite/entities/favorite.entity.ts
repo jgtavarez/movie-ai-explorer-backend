@@ -1,7 +1,7 @@
-import { BaseEntity } from 'src/common/entities/base.entity';
-import { Movie } from 'src/entities/movie/entities/movie.entity';
-import { User } from 'src/entities/user/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
+import { BaseEntity } from '../../../common/entities/base.entity';
+import { User } from '../../user/entities/user.entity';
+import { Movie } from '../../movie/entities/movie.entity';
 
 @Entity() // ManyToMany
 @Unique('user_movie_unique', ['user_id', 'movie_id'])

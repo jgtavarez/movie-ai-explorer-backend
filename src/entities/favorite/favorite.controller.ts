@@ -9,14 +9,15 @@ import {
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
 import { ToggleFavoriteInput } from './dto/toggle-favorite.input';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+
+import { Favorite } from './entities/favorite.entity';
+import { GetAllFavoritesParams } from './dto/get-all-favorites.params';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import {
   CurrentUser,
   CurrentUserType,
-} from 'src/auth/decorators/current-user.decorator';
-import { Favorite } from './entities/favorite.entity';
-import { GetAllFavoritesParams } from './dto/get-all-favorites.params';
+} from '../../auth/decorators/current-user.decorator';
 
 @ApiTags('Favorite')
 @Controller('favorites')

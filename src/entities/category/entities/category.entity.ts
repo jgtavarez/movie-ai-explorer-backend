@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseEntity } from 'src/common/entities/base.entity';
 import { Column, Entity, Unique } from 'typeorm';
+import { BaseEntity } from '../../../common/entities/base.entity';
 
 export enum CategoryTitle {
   Action = 'action',

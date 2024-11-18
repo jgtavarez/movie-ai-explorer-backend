@@ -1,5 +1,5 @@
-import { Category } from 'src/entities/category/entities/category.entity';
-import { MovieResp } from 'src/entities/movie/dto/omdb-api.interfaces';
+import { Category } from '../../entities/category/entities/category.entity';
+import { MovieResp } from '../../entities/movie/dto/omdb-api.interfaces';
 
 export const RECOMMENDATION_TEMPLATE = `
 You are a movie recommendation assistant. Based on the following movie details, recommend maximum 5 similar movies. Focus on similarities in genre, director, cast, and plot. Provide their full titles in a JSON array.
