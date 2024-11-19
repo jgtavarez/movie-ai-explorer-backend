@@ -110,7 +110,7 @@ export class MovieService {
   async upsert(createMovieInput: CreateMovieInput): Promise<Movie> {
     try {
       // check if movie exists (api)
-      const movie = await this.findOneApi({ imdbId: createMovieInput.imdb_id });
+      const movie = await this.findOneApi({ imdbId: createMovieInput.imdbId });
       if (!movie) {
         throw new NotFoundException();
       }
@@ -122,11 +122,11 @@ export class MovieService {
           title: movie.Title,
           poster: movie.Poster,
         },
-        ['imdb_id'],
+        ['imdbId'],
       );
 
       return await this.movieRepository.findOneBy({
-        imdb_id: createMovieInput.imdb_id,
+        imdbId: createMovieInput.imdbId,
       });
     } catch (error) {
       this.logger.error(error);

@@ -5,5 +5,5 @@ export class CreateMovieInput {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  imdb_id: string;
+  imdbId: string;
 }
