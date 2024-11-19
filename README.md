@@ -7,13 +7,16 @@
 
 Core technologies used..
 
-- This project was generated with [Nest.js](https://nestjs.com) version ^10.0.0.
+Core technologies used:
 
-- For the database [TypeORM](https://typeorm.io) version ^0.3.20.
-
-- For the authentication [Passport](http://www.passportjs.org) with [JWT](https://jwt.io) version ^4.0.1.
-
-- For the validations [class-validator](https://yarnpkg.com/package?name=class-validator) version ^0.14.1 and [class-transformer](https://yarnpkg.com/package?name=class-transformer) version ^0.5.1.
+- [Nest.js](https://nestjs.com) version ^10.0.0
+- [TypeORM](https://typeorm.io) version ^0.3.20
+- [Passport](http://www.passportjs.org) with [JWT](https://jwt.io) version ^4.0.1 - Authentication
+- [class-validator](https://github.com/typestack/class-validator) version ^0.14.1 - Validation
+- [class-transformer](https://github.com/typestack/class-transformer) version ^0.5.1 - Object transformation
+- [OpenAI](https://openai.com/blog/openai-api) - AI integration for movie recommendations
+- [PostgreSQL](https://www.postgresql.org/) - Database
+- [Swagger](https://swagger.io/) - API documentation
 
 # Project Structure 📐
 
@@ -91,7 +94,7 @@ How to install and running the app.
 
 # Development Pattern 📝
 
-The application is built using a modular design pattern with controllers, services and repositories to ensure a clean and maintainable architecture. Each module is in charge of group related functionalities, controllers to handle incoming requests and responses, services to encapsulate business logic, repositories/services with typeorm to handle database methods.
+The application is built using a [modular](https://docs.nestjs.com/modules) design pattern also with controllers, services and repositories to ensure a clean and maintainable architecture. Each module is in charge of group related functionalities, controllers to handle incoming requests and responses, services to encapsulate business logic, repositories/services with typeorm to handle database methods.
 
 This design allows me to scale by allowing features to be added or modified independently, while also improving reuse and separation of concerns as functionality can be easily exported from one module to another.
 
@@ -111,20 +114,8 @@ How to install and running the app.
    yarn run start:prod
 ```
 
-- Unit tests:
+- Run tests:
 
 ```bash
-  yarn run test
-```
-
-- e2e tests:
-
-```bash
-  yarn run test:e2e
-```
-
-- Test coverage
-
-```bash
-  yarn run test:cov
+  npm test
 ```
