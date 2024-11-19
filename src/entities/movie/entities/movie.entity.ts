@@ -3,11 +3,11 @@ import { Column, Entity, Unique } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 
 @Entity()
-@Unique('movie_imdbid_unique', ['imdb_id'])
+@Unique('movie_imdbid_unique', ['imdbId'])
 export class Movie extends BaseEntity {
   @ApiProperty()
-  @Column()
-  imdb_id: string;
+  @Column({ name: 'imdb_id' })
+  imdbId: string;
 
   @ApiProperty()
   @Column()

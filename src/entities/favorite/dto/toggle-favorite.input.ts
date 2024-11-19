@@ -5,5 +5,5 @@ export class ToggleFavoriteInput {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  imdb_id: string;
+  imdbId: string;
 }

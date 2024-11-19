@@ -77,6 +77,7 @@ export class OpenAiService {
   async chatBot(prompt: string) {
     try {
       const completion = await this.openai.chat.completions.create({
+        stream: true,
         messages: [
           {
             role: 'system',
@@ -89,10 +90,10 @@ export class OpenAiService {
         ],
         model: MODEL,
         temperature: 0.4,
-        max_tokens: 300,
+        max_tokens: 220,
       });
 
-      return completion.choices[0].message;
+      return completion;
     } catch (error) {
       this.logger.error(error);
       throw error;

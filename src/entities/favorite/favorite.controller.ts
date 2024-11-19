@@ -41,11 +41,11 @@ export class FavoriteController {
     return this.favoriteService.findAll(getAllFavoritesParams, currentUser.id);
   }
 
-  @Get(':imdb_id')
+  @Get(':imdbId')
   findOne(
-    @Param('imdb_id') imdb_id: string,
+    @Param('imdbId') imdbId: string,
     @CurrentUser() currentUser: CurrentUserType,
   ): Promise<boolean> {
-    return this.favoriteService.isUserFavorite(imdb_id, currentUser.id);
+    return this.favoriteService.isUserFavorite(imdbId, currentUser.id);
   }
 }

@@ -21,8 +21,8 @@ export class FavoriteService {
     userId: string,
   ): Promise<Favorite> {
     try {
-      const { imdb_id } = toggleFavoriteInput;
-      const movie = await this.movieService.upsert({ imdb_id });
+      const { imdbId } = toggleFavoriteInput;
+      const movie = await this.movieService.upsert({ imdbId });
 
       // Check if movie is already user favorite
       const favoriteFound = await this.favoriteRepository.findOneBy({
@@ -100,12 +100,12 @@ export class FavoriteService {
     }
   }
 
-  async isUserFavorite(imdb_id: string, userId: string): Promise<boolean> {
+  async isUserFavorite(imdbId: string, userId: string): Promise<boolean> {
     try {
       const favorite = await this.favoriteRepository.findOne({
         where: {
           movie: {
-            imdb_id,
+            imdbId,
           },
           user_id: userId,
         },
