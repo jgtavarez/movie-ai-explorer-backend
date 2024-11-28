@@ -4,7 +4,11 @@ import { IsInt, IsOptional, Max, Min } from 'class-validator';
 
 export class PaginationParams {
   @ApiProperty({
+    minimum: 1,
+    maximum: 100,
     default: 1,
+    required: false,
+    nullable: true,
   })
   @IsInt()
   @Min(1)

@@ -14,11 +14,16 @@ export enum CategoryTitle {
 @Entity()
 @Unique('movie_title_unique', ['title'])
 export class Category extends BaseEntity {
-  @ApiProperty()
+  @ApiProperty({
+    enum: CategoryTitle,
+    enumName: 'CategoryTitle',
+  })
   @Column({ enum: CategoryTitle, type: 'enum' })
   title: CategoryTitle;
 
-  @ApiProperty()
+  @ApiProperty({
+    format: 'url',
+  })
   @Column()
   image: string;
 }

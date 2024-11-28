@@ -3,13 +3,18 @@ import { IsEmail, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { EMAIL_LIMIT } from '../../common/utils/constants/limits.constants';
 
 export class LoginInput {
-  @ApiProperty()
+  @ApiProperty({
+    maxLength: EMAIL_LIMIT,
+    format: 'email',
+  })
   @IsEmail()
   @IsNotEmpty()
   @MaxLength(EMAIL_LIMIT)
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    format: 'password',
+  })
   @IsString()
   @IsNotEmpty()
   password: string;

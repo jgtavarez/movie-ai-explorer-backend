@@ -36,7 +36,7 @@ Most relevant files and directories are:
               └── example.service.ts                // Service definition
       ├── open-ai                         // Open AI module
       ├── app.module.ts                  // Main module
-      └── main.ts                        // Server config 
+      └── main.ts                        // Server config
    ├── .env                             // Enviroments variables for local
    ├── docker-compose.yml               // Docker compose file
    ├── package.json                     // Node.js dependencies
@@ -84,10 +84,18 @@ How to install and running the app.
   docker compose up
 ```
 
+- Create .env file
+
+```bash
+   cp .env.template .env
+   # then set your env values
+   # Tip: You can run `openssl rand -base64 32` to generate a secure value for JWT_SECRET
+```
+
 - Start development mode
 
 ```bash
-  yarn run start:dev #(make sure to set your env values first)
+  yarn run start:dev
 ```
 
 > Navigate to `http://localhost:{PORT}/api` for swagger documentation
@@ -114,8 +122,20 @@ How to install and running the app.
    yarn run start:prod
 ```
 
+- Generate database backup:
+
+```bash
+   node src/common/sql/run.js
+```
+
 - Run tests:
 
 ```bash
-  npm test
+  npm run test
+```
+
+- Run E2E tests:
+
+```bash
+  npm run test:e2e
 ```

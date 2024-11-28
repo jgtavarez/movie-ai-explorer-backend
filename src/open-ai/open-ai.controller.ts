@@ -6,7 +6,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { OpenAiService } from './open-ai.service';
 import { ChatBotParams } from './dto/chat-bot.params';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -14,11 +14,15 @@ import { Response } from 'express';
 
 @ApiTags('AI')
 @Controller('ai')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class OpenAiController {
   constructor(private readonly openAiService: OpenAiService) {}
 
   @Post('/chatbot')
+  @ApiOperation({
+    summary: 'Get chatbot response',
+  })
   async chatBot(@Body() chatBotParams: ChatBotParams, @Res() res: Response) {
     const chunks = await this.openAiService.chatBot(chatBotParams.prompt);
 

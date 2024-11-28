@@ -81,8 +81,6 @@ export class FavoriteService {
       const { search } = getAllFavoritesParams;
 
       return await this.favoriteRepository.find({
-        // take: , TODO
-        // skip: ,
         where: {
           user_id: userId,
           movie: {
