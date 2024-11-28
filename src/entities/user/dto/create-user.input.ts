@@ -13,18 +13,26 @@ import {
 } from '../../../common/utils/constants/limits.constants';
 
 export class CreateUserInput {
-  @ApiProperty()
+  @ApiProperty({
+    maxLength: NAME_LIMIT,
+  })
   @IsString()
   @MaxLength(NAME_LIMIT)
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    maxLength: EMAIL_LIMIT,
+    format: 'email',
+  })
   @IsEmail()
   @IsNotEmpty()
   @MaxLength(EMAIL_LIMIT)
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    minLength: 8,
+    format: 'password',
+  })
   @IsString()
   @MinLength(8)
   @IsNotEmpty()
@@ -35,7 +43,10 @@ export class CreateUserInput {
   })
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    minLength: 8,
+    format: 'password',
+  })
   @IsString()
   @MinLength(8)
   @IsNotEmpty()

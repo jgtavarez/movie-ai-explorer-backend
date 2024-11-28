@@ -12,18 +12,27 @@ import { MovieType } from './omdb-api.interfaces';
 import { PaginationParams } from '../../../common/dto/pagination.params';
 
 export class GetAllMoviesParams extends PaginationParams {
-  @ApiProperty()
+  @ApiProperty({
+    maxLength: 256,
+  })
   @IsString()
   @IsNotEmpty()
   @MaxLength(256)
   search: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    nullable: true,
+    enum: MovieType,
+  })
   @IsEnum(MovieType)
   @IsOptional()
-  type?: string;
+  type?: MovieType;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    nullable: true,
+  })
   @IsInt()
   @Type(() => Number)
   @IsOptional()

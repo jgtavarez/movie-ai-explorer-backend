@@ -7,7 +7,9 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 export class BaseEntity extends BaseEntityTypeOrm {
-  @ApiProperty()
+  @ApiProperty({
+    format: 'uuid',
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

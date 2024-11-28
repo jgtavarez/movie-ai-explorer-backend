@@ -15,11 +15,12 @@ export class User extends BaseEntity {
   @Column({ length: NAME_LIMIT })
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    format: 'email',
+  })
   @Column({ length: EMAIL_LIMIT })
   email: string;
 
-  @ApiProperty()
   @Column()
   @Exclude()
   password: string;

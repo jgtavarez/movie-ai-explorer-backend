@@ -84,10 +84,18 @@ How to install and running the app.
   docker compose up
 ```
 
+- Create .env file
+
+```bash
+   cp .env.template .env
+   # then set your env values
+   # Tip: You can run `openssl rand -base64 32` to generate a secure value for JWT_SECRET
+```
+
 - Start development mode
 
 ```bash
-  yarn run start:dev #(make sure to set your env values first)
+  yarn run start:dev
 ```
 
 > Navigate to `http://localhost:{PORT}/api` for swagger documentation
@@ -112,6 +120,12 @@ How to install and running the app.
 
 ```bash
    yarn run start:prod
+```
+
+- Generate database backup:
+
+```bash
+   node src/common/sql/run.js
 ```
 
 - Run tests:

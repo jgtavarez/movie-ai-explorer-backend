@@ -8,10 +8,19 @@ import { MovieModule } from './entities/movie/movie.module';
 import { FavoriteModule } from './entities/favorite/favorite.module';
 import { OpenAiModule } from './open-ai/open-ai.module';
 import { CategoryModule } from './entities/category/category.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    // Rate limit configuration
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60, // 1m
+        limit: 60, // 60 requests per minute
+      },
+    ]),
+    // DB configuration
     TypeOrmModule.forRoot({
       ssl: process.env.NODE_ENV === 'prod',
       extra: {

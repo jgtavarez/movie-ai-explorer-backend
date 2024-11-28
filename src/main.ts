@@ -6,6 +6,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,14 +22,25 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.use(helmet());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))); // Serialize @excluded fields
 
   // Swagger
   const config = new DocumentBuilder()
     .setTitle('movie-ai-explorer-backend')
-    .setDescription('description')
-    .setVersion('1.0')
+    .setDescription('Movie AI Explorer Backend API')
+    .setVersion('1.1')
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      name: 'JWT',
+      description: 'Enter JWT token',
+      in: 'header',
+    })
     .build();
+
+  // Add Swagger styles config for vercel deploy
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {
     customSiteTitle: 'Api Docs',
