@@ -36,7 +36,7 @@ Most relevant files and directories are:
               └── example.service.ts                // Service definition
       ├── open-ai                         // Open AI module
       ├── app.module.ts                  // Main module
-      └── main.ts                        // Server config 
+      └── main.ts                        // Server config
    ├── .env                             // Enviroments variables for local
    ├── docker-compose.yml               // Docker compose file
    ├── package.json                     // Node.js dependencies
@@ -131,5 +131,11 @@ How to install and running the app.
 - Run tests:
 
 ```bash
-  npm test
+  npm run test
+```
+
+- Run E2E tests:
+
+```bash
+  npm run test:e2e
 ```
