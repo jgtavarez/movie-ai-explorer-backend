@@ -50,7 +50,7 @@ Most relevant files and directories are:
 
 Push to **main** branch deploy to `PROD`
 
-- Deploy to [PROD](https://movie-ai-explorer-backend.vercel.app/api)
+- Deploy to [PROD]
 
 # Getting started 💥
 

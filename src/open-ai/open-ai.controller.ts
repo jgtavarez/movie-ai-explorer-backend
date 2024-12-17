@@ -26,7 +26,7 @@ export class OpenAiController {
   async chatBot(@Body() chatBotParams: ChatBotParams, @Res() res: Response) {
     const chunks = await this.openAiService.chatBot(chatBotParams.prompt);
 
-    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.status(HttpStatus.OK);
 
     for await (const chunk of chunks) {
