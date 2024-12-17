@@ -8,7 +8,7 @@ import {
 } from './prompts';
 import { ConfigService } from '@nestjs/config';
 
-const MODEL = 'gpt-4';
+const MODEL = process.env.NODE_ENV === 'prod' ? 'gpt-4' : 'gpt-3.5-turbo';
 
 @Injectable()
 export class OpenAiService {
